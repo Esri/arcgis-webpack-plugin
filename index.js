@@ -31,6 +31,11 @@ const requiredPlugins = [
     },
     {
       context: "node_modules",
+      from: "dojo/dojo.js",
+      to: "dojo/dojo-lite.js"
+    },
+    {
+      context: "node_modules",
       from: "dojo/request/script.js",
       to: "dojo/request/script.js"
     },

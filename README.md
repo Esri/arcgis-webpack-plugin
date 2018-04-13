@@ -97,7 +97,15 @@ esriConfig.workers.loaderConfig = {
 The bare minimum to start using the plugin is the following:
 
 ```js
-plugins: [new ArcGISPlugin()];
+// webpack.config.js
+const ArcGISPlugin = require("@arcgis/webpack-plugin");
+
+// add it to config
+module.exports = {
+  ...
+  plugins: [new ArcGISPlugin()];
+  ...
+}
 ```
 
 If you notice some oddities in the path resolutions of modules in your bundles, you can try to define how you want them referenced.
