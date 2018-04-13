@@ -2,11 +2,33 @@
 
 Build ArcGIS API for JavaScript applications with webpack
 
+* [Features](#features)
+* [Usage](#usage)
+* [Options](#options)
+* [Best Practices](#best-practices)
+  * [Loaders](#loaders)
+  * [Promises](#promises)
+  * [Node Globals](#node-globals)
+  * [Web Assembly Files](#web-assembly-files)
+  * [CSS](#css)
+* [How does it work?](#how-does-it-work)
+  * [Required Files](#required-files)
+  * [Override loader plugins](#override-loader-plugins)
+  * [Other loaders](#other-loaders)
+  * [Loader Configuration](#loader-configuration)
+* [Things we're working on](#things-were-working-on)
+* [Issues](#issues)
+* [Contributing](#contributing)
+* [Licensing](#licensing)
+
 # Features
 
 This plugin utilizes the [dojo-webpack-plugin](https://github.com/OpenNTF/dojo-webpack-plugin) to build ArcGIS API for JavaScript applications with webpack.
 
 _Requires version `4.7.0` or greater of the [ArcGIS API for JavaScript](https://github.com/esri/arcgis-js-api)_
+
+* Uses a lightweight AMD loader _during_ the Webpack build process to resolve module paths. The AMD loader is not used in the output application.
+* Creates bundles of your application with ArcGIS API for JavaScript included.
 
 # Usage
 
@@ -17,12 +39,12 @@ In order for the workers used in the ArcGIS API for JavaScript to work correctly
 This is a temporary solution until we can update how workers are loaded in the ArcGIS API for JavaScript so they are compatible with the output of a webpack build.
 
 ```ts
-import esriConfig = require("esri/config");
+import esriConfig from "esri/config";
 
 const DEFAULT_WORKER_URL = "https://js.arcgis.com/4.7/";
 const DEFAULT_LOADER_URL = `${DEFAULT_WORKER_URL}dojo/dojo-lite.js`;
 
-(esriConfig.workers as any).loaderUrl = DEFAULT_LOADER_URL;
+esriConfig.workers.loaderUrl = DEFAULT_LOADER_URL;
 esriConfig.workers.loaderConfig = {
   baseUrl: `${DEFAULT_WORKER_URL}dojo`,
   packages: [
@@ -59,26 +81,82 @@ esriConfig.workers.loaderConfig = {
     },
     { name: "tslib", location: `${DEFAULT_WORKER_URL}tslib`, main: "tslib" }
   ]
-}
+};
 ```
 
 # Options
 
-| Options     | Description   |
-| ----------- |:-------------|
-| `root`      | Is used in the `env` passed to your loader configuration. See [environment](https://github.com/OpenNTF/dojo-webpack-plugin#environment) details in the dojo-webpack-plugin. |
-| `locales`   | The locales you want included in your build output. See the [locales](https://github.com/OpenNTF/dojo-webpack-plugin#locales) details of the dojo-webpack-plugin. |
-| `options`   | You can pass any [native options of the dojo-webpack-plugin](https://github.com/OpenNTF/dojo-webpack-plugin#options) if you want to override some of the defaults of this plugin. This would also allow you to use your own [loaderConfig](https://github.com/OpenNTF/dojo-webpack-plugin#loaderconfig) instead of the default one. |
+| Options     |     Default     | Description   |
+| ----------- | :-------------: |:-------------|
+| `root`    | `"."` | Is used in the `env` passed to your loader configuration. See [environment](https://github.com/OpenNTF/dojo-webpack-plugin#environment) details in the dojo-webpack-plugin.  |
+| `locales` | `["en"]`  | The locales you want included in your build output. See the [locales](https://github.com/OpenNTF/dojo-webpack-plugin#locales) details of the dojo-webpack-plugin.  |
+| `options` | `undefined` | You can pass any [native options of the dojo-webpack-plugin](https://github.com/OpenNTF/dojo-webpack-plugin#options) if you want to override some of the defaults of this plugin. This would also allow you to use your own [loaderConfig](https://github.com/OpenNTF/dojo-webpack-plugin#loaderconfig) instead of the default one. |
 
 # Best Practices
 
 The bare minimum to start using the plugin is the following:
 
 ```js
-  plugins: [
-    new ArcGISPlugin()
-  ],
+plugins: [new ArcGISPlugin()];
 ```
+
+If you notice some oddities in the path resolutions of modules in your bundles, you can try to define how you want them referenced.
+
+```js
+plugins: [
+  new ArcGISPlugin({
+    // "../app" or similar depending on your build.
+    // most likely do not need to change
+    root: ".",
+    locales: ["en"]
+  })
+];
+```
+
+Maybe you want to override all the default options of this plugin.
+
+```js
+plugins: [
+  new ArcGISPlugin({
+    options: {
+      loaderConfig: require("./js/loaderConfig"),
+      environment: { appRoot: "release" },
+      buildEnvironment: { appRoot: "node_modules" },
+      locales: ["en"]
+    }
+  })
+];
+```
+
+## Loaders
+
+Whether you are using a TypeScript loader like [ts-loader](https://github.com/TypeStrong/ts-loader) or writing modern JavaScript and using the [babel-loader](https://github.com/babel/babel-loader), the output files from the loader need to be in AMD. This is to the dependencies can be picked up the lightweight AMD loader of this plugin during build time.
+
+That means that for TypeScript, your `tsconfig.json` should have the following option:
+
+```json
+{
+  "compilerOptions": {
+    "module": "amd"
+  }
+}
+
+```
+
+If you are using babel, be sure to include the [ES2015 modules to AMD transform plugin](https://babeljs.io/docs/plugins/transform-es2015-modules-amd/). Once installed you can add to your babel configuration as:
+
+```json
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": ["transform-es2015-modules-amd"]
+}
+```
+
+## Promises
+
+Webpack will include [ES6 Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) in your bundles, so you may want to include a Promise shim in your application. Some more detail [here](https://github.com/OpenNTF/dojo-webpack-plugin#es6-promise-dependency-in-webpack-2x). We have tested the [`@dojo/shim/Promise`](https://github.com/dojo/shim#promises) with success in our test applications. 
+
+See the [dojo-webpack-plugin-sample](https://github.com/OpenNTF/dojo-webpack-plugin-sample) for more details.
 
 See [options](#options) section for details of options you can provide to the plugin.
 
@@ -184,24 +262,169 @@ import "css!./css/main.scss";
 
 Please note, we have tested the `@arcgis/webpack-plugin` with numerous other plugins, but cannot guarantee that other webpack plugins may not cause some unexpected behavior.
 
+# How does it work?
+
+This plugin utilizes the [`dojo-webpack-plugin`](https://github.com/OpenNTF/dojo-webpack-plugin) and provides some default settings out-of-the-box.
+
+For the following, you can see the [source code](/index.js) for details of how the plugin is put together.
+
+## Required Files
+
+There are some files that need to be copied over after the bundles are done so they can be referenced dynamically at runtime. We manage this as part of the plugin.
+
+```js
+const requiredPlugins = [
+  // Copy non-packed resources needed by the app to the build directory
+  new CopyWebpackPlugin([
+    {
+      context: "node_modules",
+      from: "dojo/resources/blank.gif",
+      to: "dojo/resources"
+    },
+    {
+      context: "node_modules",
+      from: "dojo/dojo.js",
+      to: "dojo/dojo.js"
+    },
+    {
+      context: "node_modules",
+      from: "dojo/request/script.js",
+      to: "dojo/request/script.js"
+    },
+    {
+      context: "node_modules",
+      from: "arcgis-js-api/views/3d/environment/resources/stars.wsv",
+      to: "arcgis-js-api/views/3d/environment/resources/stars.wsv"
+    },
+    {
+      context: "node_modules",
+      from: "arcgis-js-api/themes/base/images/basemap-toggle-64.svg",
+      to: "arcgis-js-api/themes/base/images/basemap-toggle-64.svg"
+    },
+    {
+      context: "node_modules",
+      from: "arcgis-js-api/workers/",
+      to: "arcgis-js-api/workers/"
+    },
+    {
+      context: "node_modules",
+      from: "arcgis-js-api/core/workers/",
+      to: "arcgis-js-api/core/workers/"
+    }
+  ]),
+  ...
+];
+```
+
+## Override loader plugins
+
+We are also able to change a couple of references to loader plugins and replace the output with defined modules. We manage that as part of the plugin as well.
+
+```js
+
+const requiredPlugins = [
+  ...
+  // For plugins registered after the DojoAMDPlugin, data.request has been normalized and
+  // resolved to an absMid and loader-config maps and aliases have been applied
+  new webpack.NormalModuleReplacementPlugin(
+    /^dojox\/gfx\/renderer!/,
+    "dojox/gfx/svg"
+  ),
+  new webpack.NormalModuleReplacementPlugin(/\/moment!/, "esri/plugins/moment")
+];
+```
+
+## Other loaders
+
+We have some additional loaders we add out-of-the-box that are utilized as part of the Webpack bundling of CSS files and other assets.
+
+```js
+const additionalLoaders = [
+  // @dojo modules are referenced in the API and need to be loaded via a umd loader
+  {
+    test: /@dojo/,
+    use: "umd-compat-loader"
+  },
+  {
+    test: /\.(jpe?g|png|gif|webp)$/,
+    loader: "url-loader",
+    options: {
+      // Inline files smaller than 10 kB (10240 bytes)
+      limit: 10 * 1024,
+    }
+  },
+  {
+    test: /.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+    use: [
+      {
+        loader: "file-loader",
+        options: {
+          name: "build/[name].[ext]"
+        }
+      }
+    ]
+  }
+];
+```
+
+Then we instantiate the dojo-webpack-plugin with the options provided and pass that into the Webpack pipeline.
+
+```js
+this.options = {
+  globalContext: path.join(__dirname, "node_modules", "arcgis-js-api"),
+  environment: {
+    root: options.root || "."
+  },
+  buildEnvironment: {
+    root: "node_modules"
+  },
+  locales: options.locales || ["en"]
+};
+this.options = { ...this.options, ...options.options };
+if (!this.options.loaderConfig) {
+  this.options.loaderConfig = require("./lib/loaderConfig");
+}
+
+this.dojoPlugin = new DojoWebpackPlugin(this.options);
+```
+
+## Loader Configuration
+
+We also provide a default [loaderConfig](https://github.com/OpenNTF/dojo-webpack-plugin#the-dojo-loader-config) for this plugin that defines the [location of the ArcGIS API for JavaScript and its dependencies](/lib/loaderConfig.js). Note, this should only be used for dependencies of the ArcGIS API for JavaScript, you do not need to define locations for other libraries used with your application.
+
+We provide some default `has` configurations of the loader.
+
+```js
+    ...
+    has: {
+      "dojo-config-api": 0,             // Don't need the config API code in the embedded Dojo loader
+      "esri-promise-compatibility": 1,  // Use native Promises by default
+      "esri-webpack": 1,                // a flag used internally by the ArcGIS API for JavaScript
+      "esri-featurelayer-webgl": 1      // Enable FeatureLayer WebGL capabilities
+    }
+    ...
+```
+
 # Things we're working on
 
-1. Only works with TypeScript ([`ts-loader`](https://github.com/TypeStrong/ts-loader)) or similar at the moment. There are some issues with the output of the `babel-loader` we are currently trying to work on.
-2. Compatibility with [`DllPlugin`](https://webpack.js.org/plugins/dll-plugin/). We're trying to find how we can create a single or multiple DLL file to share across multiple applications.
-3. Improved bundles. We're going to be working towards trying to reduce the number of bundles that Webpack generates due to how we dynamically import modules at runtime.
+1.  Compatibility with [`DllPlugin`](https://webpack.js.org/plugins/dll-plugin/). We're trying to find how we can create a single Dll or multiple Dlls file to share across multiple applications.
+2.  Improved bundles. We're going to be working towards trying to reduce the number of bundles that Webpack generates due to how we dynamically import modules at runtime.
 
 # Issues
-Find a bug or want to request a new feature enhancement?  Let us know by submitting an issue.
+
+Find a bug or want to request a new feature enhancement? Let us know by submitting an issue.
 
 # Contributing
+
 Anyone and everyone is welcome to [contribute](CONTRIBUTING.md). We do accept pull requests.
 
-1. Get involved
-2. Report issues
-3. Contribute code
-4. Improve documentation
+1.  Get involved
+2.  Report issues
+3.  Contribute code
+4.  Improve documentation
 
 # Licensing
+
 Copyright 2018 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
