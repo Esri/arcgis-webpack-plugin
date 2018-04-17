@@ -51,8 +51,8 @@ const requiredPlugins = [
     },
     {
       context: "node_modules",
-      from: "arcgis-js-api/images/support/",
-      to: "arcgis-js-api/images/support/"
+      from: "arcgis-js-api/images/",
+      to: "arcgis-js-api/images/"
     },
     {
       context: "node_modules",
