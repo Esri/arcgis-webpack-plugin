@@ -25,7 +25,7 @@ Build ArcGIS API for JavaScript applications with webpack
 
 This plugin utilizes the [dojo-webpack-plugin](https://github.com/OpenNTF/dojo-webpack-plugin) to build ArcGIS API for JavaScript applications with webpack.
 
-_Requires version `4.7.0` or greater of the [ArcGIS API for JavaScript](https://github.com/esri/arcgis-js-api)_
+_Requires version `4.7.0` or greater of the [ArcGIS API for JavaScript](https://github.com/esri/arcgis-js-api/tree/4master)_
 
 * Uses a lightweight AMD loader _during_ the Webpack build process to resolve module paths. The AMD loader is not used in the output application.
 * Creates bundles of your application with ArcGIS API for JavaScript included.
