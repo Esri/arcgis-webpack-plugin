@@ -296,6 +296,11 @@ const requiredPlugins = [
     },
     {
       context: "node_modules",
+      from: "dojo/dojo.js",
+      to: "dojo/dojo-lite.js"
+    },
+    {
+      context: "node_modules",
       from: "dojo/request/script.js",
       to: "dojo/request/script.js"
     },
@@ -306,8 +311,13 @@ const requiredPlugins = [
     },
     {
       context: "node_modules",
-      from: "arcgis-js-api/themes/base/images/basemap-toggle-64.svg",
-      to: "arcgis-js-api/themes/base/images/basemap-toggle-64.svg"
+      from: "arcgis-js-api/themes/base/images/",
+      to: "arcgis-js-api/themes/base/images/"
+    },
+    {
+      context: "node_modules",
+      from: "arcgis-js-api/images/support/",
+      to: "arcgis-js-api/images/support/"
     },
     {
       context: "node_modules",
@@ -338,7 +348,7 @@ const requiredPlugins = [
     /^dojox\/gfx\/renderer!/,
     "dojox/gfx/svg"
   ),
-  new webpack.NormalModuleReplacementPlugin(/\/moment!/, "esri/plugins/moment")
+  new webpack.NormalModuleReplacementPlugin(/\/moment!/, "moment/moment")
 ];
 ```
 
