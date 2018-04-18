@@ -138,7 +138,7 @@ plugins: [
 
 ## Loaders
 
-Whether you are using a TypeScript loader like [ts-loader](https://github.com/TypeStrong/ts-loader) or writing modern JavaScript and using the [babel-loader](https://github.com/babel/babel-loader), the output files from the loader need to be in AMD. This is to the dependencies can be picked up the lightweight AMD loader of this plugin during build time.
+Whether you are using a TypeScript loader like [ts-loader](https://github.com/TypeStrong/ts-loader) or writing modern JavaScript and using the [babel-loader](https://github.com/babel/babel-loader), the output files from the loader need to be in AMD. This is so the dependencies can be picked up by the lightweight AMD loader of this plugin during build time.
 
 That means that for TypeScript, your `tsconfig.json` should have the following option:
 
