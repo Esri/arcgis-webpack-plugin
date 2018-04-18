@@ -20,6 +20,6 @@ If you're looking for help you can also post issues on [GIS Stackexchange](http:
 
 We're just getting started so even just telling us what you want to see would be extremely helpful!
 
-### Run arcgis-webpack-plugin locally
+### Run @arcgis/webpack-plugin locally
 
 You can use `npm link` to test this project locally.
