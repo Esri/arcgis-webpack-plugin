@@ -4,7 +4,7 @@
   "description": "Webpack plugin to load ArcGIS API for JavaScript into a Webpack application",
   "main": "index.js",
   "engines": {
-    "node" : ">=6.4.0"
+    "node" : ">=8.9.3"
   },
   "directories": {
     "lib": "lib"
