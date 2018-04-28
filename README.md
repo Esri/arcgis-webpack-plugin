@@ -199,6 +199,7 @@ You will want to tell Webpack to ignore the web assembly files that are included
 ## CSS
 
 When working with CSS, you can load the files directly from your application and let the [`html-webpack-plugin`](https://github.com/jantimon/html-webpack-plugin) and [`mini-css-extract-plugin`](https://github.com/webpack-contrib/mini-css-extract-plugin) output the CSS file and inject the file location directly into your output HTML file.
+Note: mini-css-extract-plugin requires webpack 4 to work.
 
 ```ts
 import "./css/main.scss";
