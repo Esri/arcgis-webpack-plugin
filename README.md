@@ -11,6 +11,7 @@ Build ArcGIS API for JavaScript applications with webpack
   * [Node Globals](#node-globals)
   * [Web Assembly Files](#web-assembly-files)
   * [CSS](#css)
+* [Sample Applications](#sample-applications)
 * [How does it work?](#how-does-it-work)
   * [Required Files](#required-files)
   * [Override loader plugins](#override-loader-plugins)
@@ -270,6 +271,12 @@ import "css!./css/main.scss";
 ```
 
 Please note, we have tested the `@arcgis/webpack-plugin` with numerous other plugins, but cannot guarantee that other webpack plugins may not cause some unexpected behavior.
+
+# Sample Applications
+
+Here are some example applications that you can try out for yourself:
+- TypeScript: https://github.com/Esri/jsapi-resources/tree/master/4.x/webpack/demo
+- Babel: https://github.com/odoe/jsapi-webpack
 
 # How does it work?
 
