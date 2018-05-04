@@ -46,6 +46,11 @@ const requiredPlugins = [
     },
     {
       context: "node_modules",
+      from: "arcgis-js-api/geometry/support/pe-wasm.wasm",
+      to: "arcgis-js-api/geometry/support/pe-wasm.wasm"
+    },
+    {
+      context: "node_modules",
       from: "arcgis-js-api/themes/base/images/",
       to: "arcgis-js-api/themes/base/images/"
     },

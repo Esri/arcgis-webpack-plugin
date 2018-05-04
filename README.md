@@ -9,7 +9,6 @@ Build ArcGIS API for JavaScript applications with webpack
   * [Loaders](#loaders)
   * [Promises](#promises)
   * [Node Globals](#node-globals)
-  * [Web Assembly Files](#web-assembly-files)
   * [CSS](#css)
 * [Sample Applications](#sample-applications)
 * [How does it work?](#how-does-it-work)
@@ -90,7 +89,7 @@ esriConfig.workers.loaderConfig = {
 | Options     |     Default     | Description   |
 | ----------- | :-------------: |:-------------|
 | `root`    | `"."` | Is used in the `env` passed to your loader configuration. See [environment](https://github.com/OpenNTF/dojo-webpack-plugin#environment) details in the dojo-webpack-plugin.  |
-| `locales` | `["en"]`  | The locales you want included in your build output. See the [locales](https://github.com/OpenNTF/dojo-webpack-plugin#locales) details of the dojo-webpack-plugin.  |
+| `locales` | undefined  | The locales you want included in your build output. See the [locales](https://github.com/OpenNTF/dojo-webpack-plugin#locales) details of the dojo-webpack-plugin.  |
 | `options` | `undefined` | You can pass any [native options of the dojo-webpack-plugin](https://github.com/OpenNTF/dojo-webpack-plugin#options) if you want to override some of the defaults of this plugin. This would also allow you to use your own [loaderConfig](https://github.com/OpenNTF/dojo-webpack-plugin#loaderconfig) instead of the default one. |
 
 # Best Practices
@@ -171,30 +170,15 @@ See [options](#options) section for details of options you can provide to the pl
 
 ## Node globals
 
-It is recommended that you ignore the node `process` and `global`, so they don't get built into your bundle.
+It is recommended that you ignore the node `process` and `global`, so they don't get built into your bundle. You want to set the `fs` module to `empty` so that the webassembly files of the [client-side projection engine](https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-projection.html) are loaded correctly.
 
 ```js
 // webpack.config.js
   node: {
     process: false,
-    global: false
+    global: false,
+    fs: "empty"
   }
-```
-
-## Web Assembly files
-
-You will want to tell Webpack to ignore the web assembly files that are included in the ArcGIS API for JavaScript. They are utilized in the workers, which for the time being, need to be loaded via the CDN as noted above.
-
-```js
-// webpack.config.js
-  externals: [
-    (context, request, callback) => {
-      if (/pe-wasm$/.test(request)) {
-        return callback(null, "amd " + request);
-      }
-      callback();
-    }
-  ],
 ```
 
 ## CSS
@@ -319,6 +303,11 @@ const requiredPlugins = [
     },
     {
       context: "node_modules",
+      from: "arcgis-js-api/geometry/support/pe-wasm.wasm",
+      to: "arcgis-js-api/geometry/support/pe-wasm.wasm"
+    },
+    {
+      context: "node_modules",
       from: "arcgis-js-api/themes/base/images/",
       to: "arcgis-js-api/themes/base/images/"
     },
@@ -403,8 +392,7 @@ this.options = {
   },
   buildEnvironment: {
     root: "node_modules"
-  },
-  locales: options.locales || ["en"]
+  }
 };
 this.options = { ...this.options, ...options.options };
 if (!this.options.loaderConfig) {
