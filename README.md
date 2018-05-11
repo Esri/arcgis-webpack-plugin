@@ -13,6 +13,7 @@ Build ArcGIS API for JavaScript applications with webpack
 * [Sample Applications](#sample-applications)
 * [How does it work?](#how-does-it-work)
   * [Required Files](#required-files)
+  * [Feature Detection](#feature-detection)
   * [Override loader plugins](#override-loader-plugins)
   * [Other loaders](#other-loaders)
   * [Loader Configuration](#loader-configuration)
@@ -331,6 +332,52 @@ const requiredPlugins = [
 ];
 ```
 
+## Feature Detection
+
+This plugin also utilizes the [webpack-hasjs-plugin](https://github.com/chuckdumont/webpack-hasjs-plugin) to set compile time static features that help enable the removal of unused code.
+
+```js
+const requiredPlugins = [
+  ...
+  [
+  // Check for has() features in the build
+  // Feature list taken directly from what is
+  // used in Dojo builds
+  new HasJsPlugin({
+    features: {
+      "some-static-feature": false
+    }
+  }),
+  ...
+];
+```
+
+There are cases in the ArcGIS API for JavaScript where feature detection is used.
+
+```js
+if (has("some-static-feature")) {
+  return true;
+}
+else {
+  return false;
+}
+```
+
+This will be converted to the following.
+
+```js
+if (false) {
+  return true;
+}
+else {
+  return false;
+}
+```
+
+So when the code is run through the build and minification becomes only `return false`.
+
+Please refer to the webpack-hasjs-plugin for [known limitations](https://github.com/chuckdumont/webpack-hasjs-plugin#limitations).
+
 ## Override loader plugins
 
 We are also able to change a couple of references to loader plugins and replace the output with defined modules. We manage that as part of the plugin as well.
@@ -361,7 +408,8 @@ const additionalLoaders = [
     use: "umd-compat-loader"
   },
   {
-    test: /\.(jpe?g|png|gif|webp)$/,
+    // scoped to the arcgis-js-api resources only
+    test: /arcgis-js-api\/.*(jpe?g|png|gif|webp)$/,
     loader: "url-loader",
     options: {
       // Inline files smaller than 10 kB (10240 bytes)
@@ -369,7 +417,8 @@ const additionalLoaders = [
     }
   },
   {
-    test: /.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+    // scoped to the arcgis-js-api resources only
+    test: /arcgis-js-api\/.*(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
     use: [
       {
         loader: "file-loader",
@@ -421,7 +470,7 @@ We provide some default `has` configurations of the loader.
 
 # Things we're working on
 
-1.  Compatibility with [`DllPlugin`](https://webpack.js.org/plugins/dll-plugin/). We're trying to find how we can create a single Dll or multiple Dlls file to share across multiple applications.
+1.  Compatibility with [`DllPlugin`](https://webpack.js.org/plugins/dll-plugin/). We're trying to find how we can create a single Dll or multiple Dll files to share across multiple applications.
 2.  Improved bundles. We're going to be working towards trying to reduce the number of bundles that Webpack generates due to how we dynamically import modules at runtime.
 
 # Issues

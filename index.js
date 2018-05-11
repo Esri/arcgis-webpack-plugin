@@ -13,72 +13,12 @@
 
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const DojoWebpackPlugin = require("dojo-webpack-plugin");
+const HasJsPlugin = require("webpack-hasjs-plugin");
+
 const webpack = require("webpack");
 const path = require("path");
 
-const requiredPlugins = [
-  // Copy non-packed resources needed by the app to the build directory
-  new CopyWebpackPlugin([
-    {
-      context: "node_modules",
-      from: "dojo/resources/blank.gif",
-      to: "dojo/resources"
-    },
-    {
-      context: "node_modules",
-      from: "dojo/dojo.js",
-      to: "dojo/dojo.js"
-    },
-    {
-      context: "node_modules",
-      from: "dojo/dojo.js",
-      to: "dojo/dojo-lite.js"
-    },
-    {
-      context: "node_modules",
-      from: "dojo/request/script.js",
-      to: "dojo/request/script.js"
-    },
-    {
-      context: "node_modules",
-      from: "arcgis-js-api/views/3d/environment/resources/stars.wsv",
-      to: "arcgis-js-api/views/3d/environment/resources/stars.wsv"
-    },
-    {
-      context: "node_modules",
-      from: "arcgis-js-api/geometry/support/pe-wasm.wasm",
-      to: "arcgis-js-api/geometry/support/pe-wasm.wasm"
-    },
-    {
-      context: "node_modules",
-      from: "arcgis-js-api/themes/base/images/",
-      to: "arcgis-js-api/themes/base/images/"
-    },
-    {
-      context: "node_modules",
-      from: "arcgis-js-api/images/",
-      to: "arcgis-js-api/images/"
-    },
-    {
-      context: "node_modules",
-      from: "arcgis-js-api/workers/",
-      to: "arcgis-js-api/workers/"
-    },
-    {
-      context: "node_modules",
-      from: "arcgis-js-api/core/workers/",
-      to: "arcgis-js-api/core/workers/"
-    }
-  ]),
-
-  // For plugins registered after the DojoAMDPlugin, data.request has been normalized and
-  // resolved to an absMid and loader-config maps and aliases have been applied
-  new webpack.NormalModuleReplacementPlugin(
-    /^dojox\/gfx\/renderer!/,
-    "dojox/gfx/svg"
-  ),
-  new webpack.NormalModuleReplacementPlugin(/\/moment!/, "moment/moment")
-];
+const requiredPlugins = require("./lib/requiredPlugins");
 
 module.exports = class ArcGISPlugin {
   constructor(options = {}) {
@@ -104,7 +44,7 @@ module.exports = class ArcGISPlugin {
       use: "umd-compat-loader"
     });
     compiler.options.module.rules.push({
-      test: /\.(jpe?g|png|gif|webp)$/,
+      test: /arcgis-js-api\/.*(jpe?g|png|gif|webp)$/,
       loader: "url-loader",
       options: {
         // Inline files smaller than 10 kB (10240 bytes)
@@ -112,7 +52,7 @@ module.exports = class ArcGISPlugin {
       }
     });
     compiler.options.module.rules.push({
-      test: /.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+      test: /arcgis-js-api\/.*(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
       use: [
         {
           loader: "file-loader",
