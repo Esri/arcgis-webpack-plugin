@@ -339,7 +339,6 @@ This plugin also utilizes the [webpack-hasjs-plugin](https://github.com/chuckdum
 ```js
 const requiredPlugins = [
   ...
-  [
   // Check for has() features in the build
   // Feature list taken directly from what is
   // used in Dojo builds
