@@ -27,7 +27,8 @@
     "file-loader": "^1.1.11",
     "umd-compat-loader": "^2.1.1",
     "url-loader": "^1.0.1",
-    "webpack-hasjs-plugin": "^1.0.0"
+    "webpack-hasjs-plugin": "^1.0.0",
+    "uglify-js": "~3.3.25"
   },
   "peerDependencies": {
     "webpack": ">= 2.2.0 < 4.0.0 || >= 4.2.0"
