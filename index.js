@@ -44,7 +44,7 @@ module.exports = class ArcGISPlugin {
       use: "umd-compat-loader"
     });
     compiler.options.module.rules.push({
-      test: /arcgis-js-api\/.*(jpe?g|png|gif|webp)$/,
+      test: /arcgis-js-api[\\\/].*.(jpe?g|png|gif|webp)$/,
       loader: "url-loader",
       options: {
         // Inline files smaller than 10 kB (10240 bytes)
@@ -52,7 +52,7 @@ module.exports = class ArcGISPlugin {
       }
     });
     compiler.options.module.rules.push({
-      test: /arcgis-js-api\/.*(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+      test: /arcgis-js-api[\\\/].*.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
       use: [
         {
           loader: "file-loader",
