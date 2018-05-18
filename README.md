@@ -10,6 +10,7 @@ Build ArcGIS API for JavaScript applications with webpack
   * [Promises](#promises)
   * [Node Globals](#node-globals)
   * [CSS](#css)
+  * [Asset Loaders](#asset-loaders)
   * [Authentication](#authentication)
 * [Sample Applications](#sample-applications)
 * [How does it work?](#how-does-it-work)
@@ -90,8 +91,9 @@ esriConfig.workers.loaderConfig = {
 
 | Options     |     Default     | Description   |
 | ----------- | :-------------: |:-------------|
+| `useDefaultAssetLoaders` | `true` | By default, this plugin provides [url-loader](https://github.com/webpack-contrib/url-loader) for images and [file-loader](https://github.com/webpack-contrib/file-loader) for fonts and svg that are used by the ArcGIS API for JavaScript. If you are using another library that requires you to also load assets, you may want to disable the default loaders of this plugin and use your own. |
 | `root`    | `"."` | Is used in the `env` passed to your loader configuration. See [environment](https://github.com/OpenNTF/dojo-webpack-plugin#environment) details in the dojo-webpack-plugin.  |
-| `locales` | undefined  | The locales you want included in your build output. See the [locales](https://github.com/OpenNTF/dojo-webpack-plugin#locales) details of the dojo-webpack-plugin.  |
+| `locales` | `undefined`  | The locales you want included in your build output. See the [locales](https://github.com/OpenNTF/dojo-webpack-plugin#locales) details of the dojo-webpack-plugin.  |
 | `options` | `undefined` | You can pass any [native options of the dojo-webpack-plugin](https://github.com/OpenNTF/dojo-webpack-plugin#options) if you want to override some of the defaults of this plugin. This would also allow you to use your own [loaderConfig](https://github.com/OpenNTF/dojo-webpack-plugin#loaderconfig) instead of the default one. |
 
 # Best Practices
@@ -118,6 +120,9 @@ plugins: [
     // "../app" or similar depending on your build.
     // most likely do not need to change
     root: ".",
+    // If you specify locales in the build
+    // only those locales are available ar runtime.
+    // Leave undefined and all locales will be available at runtime.
     locales: ["en"]
   })
 ];
@@ -258,6 +263,56 @@ import "css!./css/main.scss";
 
 Please note, we have tested the `@arcgis/webpack-plugin` with numerous other plugins, but cannot guarantee that other webpack plugins may not cause some unexpected behavior.
 
+## Asset Loaders
+
+By default, this plugin provides provides [url-loader](https://github.com/webpack-contrib/url-loader) for images and [file-loader](https://github.com/webpack-contrib/file-loader) for assets that are only used by the ArcGIS API for JavaScript. However, if you are using another library that you need to load image, svg, or fonts for, you will want to provide your own loaders. You will want to set the `useDefaultAssetLoaders` to `false`.
+
+```js
+// webpack.config.js
+...
+plugins: [
+  new ArcGISPlugin({
+    // disable provided asset loaders
+    useDefaultAssetLoaders: false
+  })
+],
+...
+```
+
+Then you can provide your own asset loaders.
+
+
+```js
+// webpack.config.js
+...
+  module: {
+    rules: [
+      ...
+      {
+        test: /\.(jpe?g|png|gif|webp)$/,
+        loader: "url-loader",
+        options: {
+          // Inline files smaller than 10 kB (10240 bytes)
+          limit: 10 * 1024,
+        }
+      },
+      {
+        test: /\.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "build/[name].[ext]"
+            }
+          }
+        ]
+      }
+    ]
+  }
+...
+
+```
+
 ## Authentication
 
 When using secured services in your application, please be sure to use [OAuth as described in this sample](https://developers.arcgis.com/javascript/latest/sample-code/identity-oauth-basic/index.html) when using the `@arcgis/webpack-plugin`. If you do not use OAuth and do not provide an `oauth-callback.html` page as provided [here](https://github.com/Esri/jsapi-resources/tree/master/oauth), your application will fall back to the [IdentityManager dialog](https://developers.arcgis.com/javascript/latest/api-reference/esri-identity-IdentityManager.html) which will not work correctly in an application built with webpack.
@@ -289,18 +344,18 @@ const requiredPlugins = [
     },
     {
       context: "node_modules",
-      from: "dojo/dojo.js",
-      to: "dojo/dojo.js"
+      from: "@arcgis/webpack-plugin/extras/dojo/",
+      to: "dojo/"
     },
     {
       context: "node_modules",
-      from: "dojo/dojo.js",
+      from: "@arcgis/webpack-plugin/extras/dojo/dojo.js",
       to: "dojo/dojo-lite.js"
     },
     {
       context: "node_modules",
-      from: "dojo/request/script.js",
-      to: "dojo/request/script.js"
+      from: "arcgis-js-api/core/request/iframe.html",
+      to: "arcgis-js-api/core/request/iframe.html"
     },
     {
       context: "node_modules",

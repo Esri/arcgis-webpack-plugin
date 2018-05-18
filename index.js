@@ -21,8 +21,17 @@ const path = require("path");
 const requiredPlugins = require("./lib/requiredPlugins");
 
 module.exports = class ArcGISPlugin {
+  /**
+   * Initialize the plugin
+   * @constructor
+   * @param {Object} [options] -(optional) The options for the ArcGIS Webpack Plugin
+   * @param {boolean} [options.useDefaultAssetLoaders] - (optional) Let the plugin manage how image, svg, and fonts are loaded
+   * @param {Array.<string>} [options.locales] - (optional) Which locales to include in build, leave empty to support all locales
+   * @param {Object} [options.options] - (optional) - Override the dojo-webpack-plugin options used by the ArcGIS Webpack Plugin
+   */
   constructor(options = {}) {
     this.options = {
+      useDefaultAssetLoaders: true,
       globalContext: path.join(__dirname, "node_modules", "arcgis-js-api"),
       environment: {
         root: options.root || "."
@@ -43,25 +52,27 @@ module.exports = class ArcGISPlugin {
       test: /@dojo/,
       use: "umd-compat-loader"
     });
-    compiler.options.module.rules.push({
-      test: /arcgis-js-api[\\\/].*.(jpe?g|png|gif|webp)$/,
-      loader: "url-loader",
-      options: {
-        // Inline files smaller than 10 kB (10240 bytes)
-        limit: 10 * 1024,
-      }
-    });
-    compiler.options.module.rules.push({
-      test: /arcgis-js-api[\\\/].*.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-      use: [
-        {
-          loader: "file-loader",
-          options: {
-            name: "build/[name].[ext]"
-          }
+    if (this.useDefaultAssetLoaders) {
+      compiler.options.module.rules.push({
+        test: /arcgis-js-api([\\]+|\/).*.(jpe?g|png|gif|webp)$/,
+        loader: "url-loader",
+        options: {
+          // Inline files smaller than 10 kB (10240 bytes)
+          limit: 10 * 1024,
         }
-      ]
-    });
+      });
+      compiler.options.module.rules.push({
+        test: /arcgis-js-api([\\]+|\/).*.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "build/[name].[ext]"
+            }
+          }
+        ]
+      });
+    }
     this.dojoPlugin = new DojoWebpackPlugin(this.options);
     requiredPlugins.unshift(this.dojoPlugin);
     requiredPlugins.forEach(plugin => plugin.apply(compiler));
