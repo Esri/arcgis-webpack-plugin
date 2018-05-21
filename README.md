@@ -11,7 +11,6 @@ Build ArcGIS API for JavaScript applications with webpack
   * [Node Globals](#node-globals)
   * [CSS](#css)
   * [Asset Loaders](#asset-loaders)
-  * [Authentication](#authentication)
 * [Sample Applications](#sample-applications)
 * [How does it work?](#how-does-it-work)
   * [Required Files](#required-files)
@@ -312,10 +311,6 @@ Then you can provide your own asset loaders.
 ...
 
 ```
-
-## Authentication
-
-When using secured services in your application, please be sure to use [OAuth as described in this sample](https://developers.arcgis.com/javascript/latest/sample-code/identity-oauth-basic/index.html) when using the `@arcgis/webpack-plugin`. If you do not use OAuth and do not provide an `oauth-callback.html` page as provided [here](https://github.com/Esri/jsapi-resources/tree/master/oauth), your application will fall back to the [IdentityManager dialog](https://developers.arcgis.com/javascript/latest/api-reference/esri-identity-IdentityManager.html) which will not work correctly in an application built with webpack.
 
 # Sample Applications
 
