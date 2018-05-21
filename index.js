@@ -52,7 +52,7 @@ module.exports = class ArcGISPlugin {
       test: /@dojo/,
       use: "umd-compat-loader"
     });
-    if (this.useDefaultAssetLoaders) {
+    if (this.options.useDefaultAssetLoaders) {
       compiler.options.module.rules.push({
         test: /arcgis-js-api([\\]+|\/).*.(jpe?g|png|gif|webp)$/,
         loader: "url-loader",
