@@ -21,8 +21,8 @@ const defaultOptions = {
 const IMAGE_FOLDER = "./node_modules/arcgis-js-api/assets/images/logo.png";
 const FONTS_FOLDER = "./node_modules/arcgis-js-api/fonts/font.ttf";
 
-const IMAGE_FOLDER_BAD = "./node_modules/otherlib/assets/images/logo.png";
-const FONTS_FOLDER_BAD = "./node_modules/otherlib/fonts/font.ttf";
+const IMAGE_FOLDER_IGNORE = "./node_modules/otherlib/assets/images/logo.png";
+const FONTS_FOLDER_IGNORE = "./node_modules/otherlib/fonts/font.ttf";
 
 describe("Initialize ArcGIS webpack plugin", () => {
 
@@ -52,9 +52,9 @@ describe("Initialize ArcGIS webpack plugin", () => {
   it ("will have regex that is scoped to the arcgis-js-api folder", () => {
     const [_, urlLoader, fileLoader] = compiler.options.module.rules;
     expect(urlLoader.test.test(IMAGE_FOLDER)).to.be.true;
-    expect(urlLoader.test.test(IMAGE_FOLDER_BAD)).to.be.false;
+    expect(urlLoader.test.test(IMAGE_FOLDER_IGNORE)).to.be.false;
 
     expect(fileLoader.test.test(FONTS_FOLDER)).to.be.true;
-    expect(fileLoader.test.test(FONTS_FOLDER_BAD)).to.be.false;
+    expect(fileLoader.test.test(FONTS_FOLDER_IGNORE)).to.be.false;
   });
 });
