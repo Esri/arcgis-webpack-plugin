@@ -55,11 +55,15 @@ module.exports = class ArcGISPlugin {
     if (this.options.useDefaultAssetLoaders) {
       compiler.options.module.rules.push({
         test: /arcgis-js-api([\\]+|\/).*.(jpe?g|png|gif|webp)$/,
-        loader: "url-loader",
-        options: {
-          // Inline files smaller than 10 kB (10240 bytes)
-          limit: 10 * 1024,
-        }
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              // Inline files smaller than 10 kB (10240 bytes)
+              limit: 10 * 1024,
+            }
+          }
+        ]
       });
       compiler.options.module.rules.push({
         test: /arcgis-js-api([\\]+|\/).*.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
