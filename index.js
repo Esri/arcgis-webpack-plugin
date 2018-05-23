@@ -40,7 +40,7 @@ module.exports = class ArcGISPlugin {
         root: "node_modules"
       }
     };
-    this.options = { ...this.options, ...options.options };
+    this.options = { ...this.options, ...options, ...options.options };
     if (!this.options.loaderConfig) {
       this.options.loaderConfig = require("./lib/loaderConfig");
     }

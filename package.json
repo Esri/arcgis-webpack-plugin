@@ -39,6 +39,7 @@
   "devDependencies": {
     "intern": "^4.0.0-rc.1",
     "memory-fs": "^0.4.1",
+    "sinon": "^5.0.7",
     "webpack": "^4.8.3"
   }
 }
