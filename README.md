@@ -166,12 +166,11 @@ That means that for TypeScript, your `tsconfig.json` should have the following o
 
 ```
 
-If you are using babel, be sure to include the [ES2015 modules to AMD transform plugin](https://babeljs.io/docs/plugins/transform-es2015-modules-amd/). Once installed you can add to your babel configuration as:
+For babel, update your configuration as follow :
 
 ```json
 {
-  "presets": ["@babel/preset-env"],
-  "plugins": ["transform-es2015-modules-amd"]
+  "presets": [["@babel/preset-env",{"modules":"amd"}]]
 }
 ```
 
