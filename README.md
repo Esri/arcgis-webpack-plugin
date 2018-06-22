@@ -327,7 +327,7 @@ Then you can provide your own asset loaders.
 
 **NOTE - _Advanced Usage_**
 
-If you are building a 2D mapping application and do not require 3D, you can exclude 3D related modules by disabling the 3d `features`. This option will remove 3D modules from the output JavaScript bundles for your application. Please note, this does not impact the file size of the JavaScript used in your application, only in the number of bundles generated.
+If you are building a 2D mapping application and do not require 3D, you can exclude 3D related modules by disabling the 3d `features`. This option will remove 3D modules from the output JavaScript bundles for your application. Please note, _this does not impact the file size of the JavaScript used in your application, only in the number of bundles generated_.
 
 ```js
 // webpack.config.js
