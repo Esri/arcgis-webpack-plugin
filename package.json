@@ -28,10 +28,11 @@
     "copy-webpack-plugin": "^4.1.1",
     "dojo-webpack-plugin": "^2.7.2",
     "file-loader": "^1.1.11",
+    "null-loader": "^0.1.1",
+    "uglify-js": "~3.3.25",
     "umd-compat-loader": "^2.1.1",
     "url-loader": "^1.0.1",
-    "webpack-hasjs-plugin": "^1.0.0",
-    "uglify-js": "~3.3.25"
+    "webpack-hasjs-plugin": "^1.0.0"
   },
   "peerDependencies": {
     "webpack": ">= 2.2.0 < 4.0.0 || >= 4.2.0"

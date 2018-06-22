@@ -11,14 +11,12 @@
   limitations under the License.
 */
 
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 const DojoWebpackPlugin = require("dojo-webpack-plugin");
-const HasJsPlugin = require("webpack-hasjs-plugin");
-
-const webpack = require("webpack");
 const path = require("path");
 
 const requiredPlugins = require("./lib/requiredPlugins");
+const exclude3D = require("./lib/exclude3D");
+const userExclusions = require("./lib/userExclusions");
 
 module.exports = class ArcGISPlugin {
   /**
@@ -26,12 +24,16 @@ module.exports = class ArcGISPlugin {
    * @constructor
    * @param {Object} [options] -(optional) The options for the ArcGIS Webpack Plugin
    * @param {boolean} [options.useDefaultAssetLoaders] - (optional) Let the plugin manage how image, svg, and fonts are loaded
+   * @param {boolean} [options.exclude3D] - (optional) Advanced! If true, will exclude all 3D related modules from output bundles
+   * @param {Array.<string>} [options.userDefinedExcludes] - (optional) Advanced! Provide a list of modules you would like to exclude from the output bundles
    * @param {Array.<string>} [options.locales] - (optional) Which locales to include in build, leave empty to support all locales
    * @param {Object} [options.options] - (optional) - Override the dojo-webpack-plugin options used by the ArcGIS Webpack Plugin
    */
   constructor(options = {}) {
     this.options = {
       useDefaultAssetLoaders: true,
+      exclude3D: false,
+      userDefinedExcludes: [],
       globalContext: path.join(__dirname, "node_modules", "arcgis-js-api"),
       environment: {
         root: options.root || "."
@@ -65,6 +67,12 @@ module.exports = class ArcGISPlugin {
           }
         ]
       });
+      if (this.options.exclude3D) {
+        compiler.options.module.rules.push(exclude3D);
+      }
+      if (this.options.userDefinedExcludes && this.options.userDefinedExcludes.length) {
+        compiler.options.module.rules.push(userExclusions(this.options.userDefinedExcludes));
+      }
       compiler.options.module.rules.push({
         test: /arcgis-js-api([\\]+|\/).*.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
         use: [

@@ -20,6 +20,7 @@ Build ArcGIS API for JavaScript applications with webpack
   * [Node Globals](#node-globals)
   * [CSS](#css)
   * [Asset Loaders](#asset-loaders)
+  * [Excluding Modules](#excluding-modules)
 * [Sample Applications](#sample-applications)
 * [How does it work?](#how-does-it-work)
   * [Required Files](#required-files)
@@ -102,7 +103,9 @@ esriConfig.workers.loaderConfig = {
 | `useDefaultAssetLoaders` | `true` | By default, this plugin provides [url-loader](https://github.com/webpack-contrib/url-loader) for images and [file-loader](https://github.com/webpack-contrib/file-loader) for fonts and svg that are used by the ArcGIS API for JavaScript. If you are using another library that requires you to also load assets, you may want to disable the default loaders of this plugin and use your own. |
 | `root`    | `"."` | Is used in the `env` passed to your loader configuration. See [environment](https://github.com/OpenNTF/dojo-webpack-plugin#environment) details in the dojo-webpack-plugin.  |
 | `locales` | `undefined`  | The locales you want included in your build output. See the [locales](https://github.com/OpenNTF/dojo-webpack-plugin#locales) details of the dojo-webpack-plugin.  |
-| `options` | `undefined` | You can pass any [native options of the dojo-webpack-plugin](https://github.com/OpenNTF/dojo-webpack-plugin#options) if you want to override some of the defaults of this plugin. This would also allow you to use your own [loaderConfig](https://github.com/OpenNTF/dojo-webpack-plugin#loaderconfig) instead of the default one. |
+| `exclude3D` | `false` | **ADVANCED** - You can choose to exlcude all 3D related modules from the output bundles. This does not reduce the file size of the output JavaScript, but will reduce the number of bundles generated for the ArcGIS API for JavaScript. |
+| `userDefinedExcludes` | `[]` | **ADVANCED** - You can provide an array modules as `string` that you want to exclude from the output bundles. For example, you may want to exclude layers you are not using. |
+| `options` | `undefined` | **ADVANCED** - You can pass any [native options of the dojo-webpack-plugin](https://github.com/OpenNTF/dojo-webpack-plugin#options) if you want to override some of the defaults of this plugin. This would also allow you to use your own [loaderConfig](https://github.com/OpenNTF/dojo-webpack-plugin#loaderconfig) instead of the default one. |
 
 # Best Practices
 
@@ -319,6 +322,52 @@ Then you can provide your own asset loaders.
 ...
 
 ```
+
+## Excluding Modules
+
+**NOTE - _Advanced Usage_**
+
+If you are building a 2D mapping application and do not require 3D modules, you can exclude 3D related modules by setting `exclude3D` to `true`. This option will remove 3D modules from the output JavaScript bundles for your application. _Please note, this does not impact the file size of the JavaScript used in your application, only in the number of bundles generated_.
+
+```js
+// webpack.config.js
+...
+plugins: [
+  new ArcGISPlugin({
+    // exclude 3D modules from build
+    exclude3D: true
+  })
+],
+...
+```
+
+You also have the option to pass in an array of other modules that you may want to exclude from your application. For example, maybe you are not using a particular set of layers. You can add them to the `userDefinedExcludes` option.
+
+```js
+// webpack.config.js
+...
+plugins: [
+  new ArcGISPlugin({
+    // exclude modules you do not need
+    userDefinedExcludes: [
+      "arcgis-js-api/layers/BingMapsLayer",
+      "arcgis-js-api/layers/CSVLayer",
+      "arcgis-js-api/layers/GeoRSSLayer",
+      "arcgis-js-api/layers/ImageryLayer",
+      "arcgis-js-api/layers/KMLLayer",
+      "arcgis-js-api/layers/MapImageLayer",
+      "arcgis-js-api/layers/OpenStreetMapLayer",
+      "arcgis-js-api/layers/StreamLayer",
+      "arcgis-js-api/layers/WMSLayer",
+      "arcgis-js-api/layers/WMTSLayer",
+      "arcgis-js-api/layers/WebTileLayer"
+    ]
+  })
+],
+...
+```
+
+Again, this considered **ADVANCED** usage, so please use with caution.
 
 # Sample Applications
 
