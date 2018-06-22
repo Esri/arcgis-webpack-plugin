@@ -327,7 +327,7 @@ Then you can provide your own asset loaders.
 
 **NOTE - _Advanced Usage_**
 
-If you are building a 2D mapping application and do not require 3D modules, you can exclude 3D related modules by setting `exclude3D` to `true`. This option will remove 3D modules from the output JavaScript bundles for your application. _Please note, this does not impact the file size of the JavaScript used in your application, only in the number of bundles generated_.
+If you are building a 2D mapping application and do not require 3D, you can exclude 3D related modules by disabling the 3d `features`. This option will remove 3D modules from the output JavaScript bundles for your application. Please note, this does not impact the file size of the JavaScript used in your application, only in the number of bundles generated.
 
 ```js
 // webpack.config.js
@@ -335,7 +335,9 @@ If you are building a 2D mapping application and do not require 3D modules, you 
 plugins: [
   new ArcGISPlugin({
     // exclude 3D modules from build
-    exclude3D: true
+    features: {
+      "3d": false
+    }
   })
 ],
 ...

@@ -66,7 +66,9 @@ describe("Initialize ArcGIS webpack plugin", () => {
 
   it ("will use null-loader to exclude 3D modules given exclude3D = true", () => {
     const plugin = new ArcGISWebpackPlugin({
-      exclude3D: true
+      features: {
+        "3d": false
+      }
     });
     const compiler = createCompiler();
     plugin.apply(compiler);

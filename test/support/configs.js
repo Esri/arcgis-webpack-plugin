@@ -2,7 +2,9 @@ const path = require("path");
 
 const defaultOptions = {
   useDefaultAssetLoaders: true,
-  exclude3D: false,
+  features: {
+    "3d": true
+  },
   userDefinedExcludes: [],
   globalContext: path.join(__dirname, "./../../node_modules", "arcgis-js-api"),
   environment: {
