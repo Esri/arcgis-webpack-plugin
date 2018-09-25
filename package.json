@@ -25,14 +25,14 @@
   "license": "Apache-2.0",
   "dependencies": {
     "arcgis-js-api": "~4.8.1",
-    "copy-webpack-plugin": "^4.1.1",
-    "dojo-webpack-plugin": "^2.7.2",
+    "copy-webpack-plugin": "^4.5.2",
+    "dojo-webpack-plugin": "^2.7.6-0",
     "file-loader": "^1.1.11",
     "null-loader": "^0.1.1",
-    "uglify-js": "~3.3.25",
+    "uglify-js": "^3.3.28",
     "umd-compat-loader": "^2.1.1",
-    "url-loader": "^1.0.1",
-    "webpack-hasjs-plugin": "^1.0.0"
+    "url-loader": "^1.1.1",
+    "webpack-hasjs-plugin": "^1.0.3"
   },
   "peerDependencies": {
     "webpack": ">= 2.2.0 < 4.0.0 || >= 4.2.0"
@@ -41,6 +41,6 @@
     "intern": "^4.0.0-rc.1",
     "memory-fs": "^0.4.1",
     "sinon": "^5.0.7",
-    "webpack": "^4.8.3"
+    "webpack": "^4.20.1"
   }
 }
