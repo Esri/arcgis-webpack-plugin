@@ -24,9 +24,9 @@
   "author": "Rene Rubalcava <rrubalcava@esri.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "arcgis-js-api": "~4.9.0",
+    "arcgis-js-api": "~4.10.0",
     "copy-webpack-plugin": "^4.5.2",
-    "dojo-webpack-plugin": "^2.7.6",
+    "dojo-webpack-plugin": "^2.7.7",
     "file-loader": "^1.1.11",
     "null-loader": "^0.1.1",
     "uglify-js": "^3.3.28",

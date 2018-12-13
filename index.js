@@ -43,7 +43,8 @@ module.exports = class ArcGISPlugin {
       },
       buildEnvironment: {
         root: "node_modules"
-      }
+      },
+      noConsole: true
     };
     this.options = { ...this.options, ...options, ...options.options };
     if (!this.options.loaderConfig) {
