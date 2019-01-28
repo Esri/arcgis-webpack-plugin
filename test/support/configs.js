@@ -14,6 +14,7 @@ const defaultOptions = {
     root: "node_modules"
   },
   loaderConfig: {},
+  noConsole: true,
   options: {
     loaderConfig: {}
   }
