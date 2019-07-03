@@ -53,7 +53,7 @@ This is a temporary solution until we can update how workers are loaded in the A
 ```ts
 import esriConfig from "esri/config";
 
-const DEFAULT_WORKER_URL = "https://js.arcgis.com/4.7/";
+const DEFAULT_WORKER_URL = "https://js.arcgis.com/4.12/";
 const DEFAULT_LOADER_URL = `${DEFAULT_WORKER_URL}dojo/dojo-lite.js`;
 
 esriConfig.workers.loaderUrl = DEFAULT_LOADER_URL;
@@ -370,6 +370,28 @@ plugins: [
 ```
 
 Again, this considered **ADVANCED** usage, so please use with caution.
+
+## Additional `has` flags
+
+You can provide addition `has` flags to the build as well.
+
+
+```js
+// webpack.config.js
+...
+plugins: [
+  new ArcGISPlugin({
+    // exclude 3D modules from build
+    features: {
+      has: {
+        // enable native promise in ArcGIS API for JavaScript
+        'esri-native-promise': true,
+      }
+    }
+  })
+],
+...
+```
 
 # Sample Applications
 

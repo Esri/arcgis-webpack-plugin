@@ -26,6 +26,7 @@ module.exports = class ArcGISPlugin {
    * @param {boolean} [options.useDefaultAssetLoaders] - (optional) Let the plugin manage how image, svg, and fonts are loaded
    * @param {Object} [options.features] - (optional) Advanced! Set of features you can enable and disable.
    * @param {boolean} [options.features.3d] - (optional) Advanced! If false, will exclude all 3D related modules from output bundles. Default is `true`
+   * @param {Object} [options.features.has] - (optional) Additional `has` features to provide to the build
    * @param {Array.<string>} [options.userDefinedExcludes] - (optional) Advanced! Provide a list of modules you would like to exclude from the output bundles
    * @param {Array.<string>} [options.locales] - (optional) Which locales to include in build, leave empty to support all locales
    * @param {Object} [options.options] - (optional) - Override the dojo-webpack-plugin options used by the ArcGIS Webpack Plugin
@@ -34,7 +35,8 @@ module.exports = class ArcGISPlugin {
     this.options = {
       useDefaultAssetLoaders: true,
       features: {
-        "3d": true
+        "3d": true,
+        has: {}
       },
       userDefinedExcludes: [],
       globalContext: path.join(__dirname, "node_modules", "arcgis-js-api"),
@@ -89,8 +91,9 @@ module.exports = class ArcGISPlugin {
         ]
       });
     }
+    const plugins = requiredPlugins(this.options.features.has);
     this.dojoPlugin = new DojoWebpackPlugin(this.options);
-    requiredPlugins.unshift(this.dojoPlugin);
-    requiredPlugins.forEach(plugin => plugin.apply(compiler));
+    plugins.unshift(this.dojoPlugin);
+    plugins.forEach(plugin => plugin.apply(compiler));
   }
 };
