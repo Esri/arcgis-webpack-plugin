@@ -383,7 +383,6 @@ You can provide addition `has` flags to the build as well.
 ...
 plugins: [
   new ArcGISPlugin({
-    // exclude 3D modules from build
     features: {
       has: {
         // enable native promise in ArcGIS API for JavaScript
