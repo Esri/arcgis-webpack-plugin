@@ -50,7 +50,7 @@ module.exports = class ArcGISPlugin {
     };
     this.options = { ...this.options, ...options, ...options.options };
     if (!this.options.loaderConfig) {
-      this.options.loaderConfig = require("./lib/loaderConfig");
+      this.options.loaderConfig = require("./lib/loaderConfig")(this.options.features.has);
     }
   }
   
