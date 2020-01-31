@@ -46,6 +46,7 @@ module.exports = class ArcGISPlugin {
       buildEnvironment: {
         root: "node_modules"
       },
+      loader: path.join(__dirname, "./loader/dojo.js"),
       noConsole: true
     };
     this.options = { ...this.options, ...options, ...options.options };
