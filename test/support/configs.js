@@ -15,6 +15,7 @@ const defaultOptions = {
     root: "node_modules"
   },
   loaderConfig: {},
+  loader: path.join(__dirname, "../../loader/dojo.js"),
   noConsole: true,
   options: {
     loaderConfig: {}
