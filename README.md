@@ -102,7 +102,7 @@ esriConfig.workers.loaderConfig = {
 | ----------- | :-------------: |:-------------|
 | `useDefaultAssetLoaders` | `true` | By default, this plugin provides [url-loader](https://github.com/webpack-contrib/url-loader) for images and [file-loader](https://github.com/webpack-contrib/file-loader) for fonts and svg that are used by the ArcGIS API for JavaScript. If you are using another library that requires you to also load assets, you may want to disable the default loaders of this plugin and use your own. |
 | `root`    | `"."` | Is used in the `env` passed to your loader configuration. See [environment](https://github.com/OpenNTF/dojo-webpack-plugin#environment) details in the dojo-webpack-plugin.  |
-| `locales` | `undefined`  | The locales you want included in your build output. See the [locales](https://github.com/OpenNTF/dojo-webpack-plugin#locales) details of the dojo-webpack-plugin.  |
+| `locales` | `undefined`  | **DEPRECATED** The locales you want included in your build output. See the [locales](https://github.com/OpenNTF/dojo-webpack-plugin#locales) details of the dojo-webpack-plugin.  |
 | `features` | {} | **ADVANCED** - See the [Additional Features](#additional-features) section |
 | `userDefinedExcludes` | `[]` | **ADVANCED** - You can provide an array modules as `string` that you want to exclude from the output bundles. For example, you may want to exclude layers you are not using. |
 | `options` | `undefined` | **ADVANCED** - You can pass any [native options of the dojo-webpack-plugin](https://github.com/OpenNTF/dojo-webpack-plugin#options) if you want to override some of the defaults of this plugin. This would also allow you to use your own [loaderConfig](https://github.com/OpenNTF/dojo-webpack-plugin#loaderconfig) instead of the default one. |
@@ -131,10 +131,6 @@ plugins: [
     // "../app" or similar depending on your build.
     // most likely do not need to change
     root: ".",
-    // If you specify locales in the build
-    // only those locales are available ar runtime.
-    // Leave undefined and all locales will be available at runtime.
-    locales: ["en"]
   })
 ];
 ```
@@ -148,7 +144,6 @@ plugins: [
       loaderConfig: require("./js/loaderConfig"),
       environment: { appRoot: "release" },
       buildEnvironment: { appRoot: "node_modules" },
-      locales: ["en"]
     }
   })
 ];
