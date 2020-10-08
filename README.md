@@ -53,7 +53,7 @@ This is a temporary solution until we can update how workers are loaded in the A
 ```ts
 import esriConfig from "esri/config";
 
-const DEFAULT_WORKER_URL = "https://js.arcgis.com/4.12/";
+const DEFAULT_WORKER_URL = "https://js.arcgis.com/4.17/";
 const DEFAULT_LOADER_URL = `${DEFAULT_WORKER_URL}dojo/dojo-lite.js`;
 
 esriConfig.workers.loaderUrl = DEFAULT_LOADER_URL;
@@ -62,8 +62,6 @@ esriConfig.workers.loaderConfig = {
   packages: [
     { name: "esri", location: `${DEFAULT_WORKER_URL}esri` },
     { name: "dojo", location: `${DEFAULT_WORKER_URL}dojo` },
-    { name: "dojox", location: `${DEFAULT_WORKER_URL}dojox` },
-    { name: "dstore", location: `${DEFAULT_WORKER_URL}dstore` },
     { name: "moment", location: `${DEFAULT_WORKER_URL}moment` },
     { name: "@dojo", location: `${DEFAULT_WORKER_URL}@dojo` },
     {
@@ -619,7 +617,7 @@ Anyone and everyone is welcome to [contribute](CONTRIBUTING.md). We do accept pu
 
 # Licensing
 
-Copyright 2018 Esri
+Copyright 2020 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
