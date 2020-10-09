@@ -1,6 +1,6 @@
 {
   "name": "@arcgis/webpack-plugin",
-  "version": "4.17.2",
+  "version": "4.17.3",
   "description": "Webpack plugin to load ArcGIS API for JavaScript into a Webpack application",
   "main": "index.js",
   "engines": {
@@ -25,7 +25,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "arcgis-js-api": "~4.17.0",
-    "copy-webpack-plugin": "^5.1.1",
+    "copy-webpack-plugin": "^6.2.1",
     "dojo-webpack-plugin": "^2.8.18",
     "dojo": "^1.16.3",
     "dojo-util": "dojo/util#1.16.3",
