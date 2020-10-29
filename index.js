@@ -11,7 +11,6 @@
   limitations under the License.
 */
 
-const DojoWebpackPlugin = require("dojo-webpack-plugin");
 const path = require("path");
 
 const requiredPlugins = require("./lib/requiredPlugins");
@@ -26,33 +25,19 @@ module.exports = class ArcGISPlugin {
    * @param {boolean} [options.useDefaultAssetLoaders] - (optional) Let the plugin manage how image, svg, and fonts are loaded
    * @param {Object} [options.features] - (optional) Advanced! Set of features you can enable and disable.
    * @param {boolean} [options.features.3d] - (optional) Advanced! If false, will exclude all 3D related modules from output bundles. Default is `true`
-   * @param {Object} [options.features.has] - (optional) Additional `has` features to provide to the build
    * @param {Array.<string>} [options.userDefinedExcludes] - (optional) Advanced! Provide a list of modules you would like to exclude from the output bundles
    * @param {Array.<string>} [options.locales] - (optional) Which locales to include in build, leave empty to support all locales
-   * @param {Object} [options.options] - (optional) - Override the dojo-webpack-plugin options used by the ArcGIS Webpack Plugin
    */
   constructor(options = {}) {
     this.options = {
       useDefaultAssetLoaders: true,
       features: {
-        "3d": true,
-        has: {}
+        "3d": true
       },
       userDefinedExcludes: [],
-      globalContext: path.join(__dirname, "node_modules", "arcgis-js-api"),
-      environment: {
-        root: options.root || "."
-      },
-      buildEnvironment: {
-        root: "node_modules"
-      },
-      loader: path.join(__dirname, "./loader/dojo.js"),
-      noConsole: true
+      locales: []
     };
     this.options = { ...this.options, ...options, ...options.options };
-    if (!this.options.loaderConfig) {
-      this.options.loaderConfig = require("./lib/loaderConfig")(this.options.features.has);
-    }
   }
   
   apply(compiler) {
@@ -63,7 +48,7 @@ module.exports = class ArcGISPlugin {
     });
     if (this.options.useDefaultAssetLoaders) {
       compiler.options.module.rules.push({
-        test: /arcgis-js-api([\\]+|\/).*.(jpe?g|png|gif|webp)$/,
+        test: /(@arcgis\/core|arcgis-js-api)([\\]+|\/).*.(jpe?g|png|gif|webp)$/,
         use: [
           {
             loader: "url-loader",
@@ -81,7 +66,7 @@ module.exports = class ArcGISPlugin {
         compiler.options.module.rules.push(userExclusions(this.options.userDefinedExcludes));
       }
       compiler.options.module.rules.push({
-        test: /arcgis-js-api([\\]+|\/).*.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        test: /(@arcgis\/core|arcgis-js-api)([\\]+|\/).*.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
         use: [
           {
             loader: "file-loader",
@@ -92,9 +77,7 @@ module.exports = class ArcGISPlugin {
         ]
       });
     }
-    const plugins = requiredPlugins(this.options.features.has);
-    this.dojoPlugin = new DojoWebpackPlugin(this.options);
-    plugins.unshift(this.dojoPlugin);
+    const plugins = requiredPlugins(this.options.locales);
     plugins.forEach(plugin => plugin.apply(compiler));
   }
 };

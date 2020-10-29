@@ -1,6 +1,6 @@
 {
   "name": "@arcgis/webpack-plugin",
-  "version": "4.17.5",
+  "version": "4.18.0-next.20201029",
   "description": "Webpack plugin to load ArcGIS API for JavaScript into a Webpack application",
   "main": "index.js",
   "engines": {
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/esri/arcgis-webpack-plugin.git"
   },
   "scripts": {
-    "test": "intern"
+    "test": "TEST_ENV=test intern"
   },
   "keywords": [
     "esri",
@@ -24,17 +24,11 @@
   "author": "Rene Rubalcava <rrubalcava@esri.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "arcgis-js-api": "~4.17.0",
     "copy-webpack-plugin": "^6.2.1",
-    "dojo": "^1.16.3",
-    "dojo-util": "dojo/util#1.16.3",
-    "dojo-webpack-plugin": "^2.8.18",
     "file-loader": "^6.1.0",
     "null-loader": "^4.0.0",
-    "terser": "^5.3.4",
     "umd-compat-loader": "^2.1.1",
-    "url-loader": "^4.0.0",
-    "webpack-hasjs-plugin": "^1.0.3"
+    "url-loader": "^4.0.0"
   },
   "peerDependencies": {
     "webpack": ">= 2.2.0 < 4.0.0 || >= 4.2.0",

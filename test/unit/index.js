@@ -6,7 +6,6 @@ const createCompiler = require("../support/compiler");
 const { defaultOptions } = require("../support/configs");
 
 const ArcGISWebpackPlugin = require("../../index");
-const DojoWebpackPlugin = require("dojo-webpack-plugin");
 
 // test paths
 const IMAGE_FOLDER = "./node_modules/arcgis-js-api/assets/images/logo.png";
@@ -15,23 +14,8 @@ const IMAGE_FOLDER_IGNORE = "./node_modules/otherlib/assets/images/logo.png";
 const FONTS_FOLDER_IGNORE = "./node_modules/otherlib/fonts/font.ttf";
 
 describe("Initialize ArcGIS webpack plugin", () => {
-
-  let DojoWebpackPluginApplyStub;
-
-  before(() => {
-    DojoWebpackPluginApplyStub = sinon.stub(DojoWebpackPlugin.prototype, 'apply');
-  });
-
-  after(() => {
-    DojoWebpackPluginApplyStub.restore();
-  });
-
   it ("will have default options", () => {
-    const plugin = new ArcGISWebpackPlugin({
-      options: {
-        loaderConfig: {}
-      }
-    });
+    const plugin = new ArcGISWebpackPlugin();
     expect(plugin.options).to.deep.equal(defaultOptions);
   });
 
@@ -40,19 +24,6 @@ describe("Initialize ArcGIS webpack plugin", () => {
     const compiler = createCompiler();
     plugin.apply(compiler);
     expect(compiler.options.module.rules).to.have.lengthOf(3);
-  });
-
-  it ("will have regex that is scoped to the arcgis-js-api folder", () => {
-    const plugin = new ArcGISWebpackPlugin();
-    const compiler = createCompiler();
-    plugin.apply(compiler);
-
-    const [_, urlLoader, fileLoader] = compiler.options.module.rules;
-    expect(urlLoader.test.test(IMAGE_FOLDER)).to.be.true;
-    expect(urlLoader.test.test(IMAGE_FOLDER_IGNORE)).to.be.false;
-
-    expect(fileLoader.test.test(FONTS_FOLDER)).to.be.true;
-    expect(fileLoader.test.test(FONTS_FOLDER_IGNORE)).to.be.false;
   });
 
   it ("will not use default loaders given useDefaultAssetLoaders = false", () => {
