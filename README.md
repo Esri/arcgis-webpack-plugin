@@ -70,6 +70,21 @@ module.exports = {
 }
 ```
 
+If you want to specify supported locales, you can define them in the plugin.
+
+```js
+// webpack.config.js
+module.exports = {
+  ...
+  plugins: [
+    new ArcGISPlugin({
+      locales: ['en', 'es']
+    })
+  ]
+  ...
+}
+```
+
 ## Asset Loaders
 
 By default, this plugin provides provides [url-loader](https://github.com/webpack-contrib/url-loader) for images and [file-loader](https://github.com/webpack-contrib/file-loader) for assets that are only used by the ArcGIS API for JavaScript. However, if you are using another library that you need to load image, svg, or fonts for, you will want to provide your own loaders. You will want to set the `useDefaultAssetLoaders` to `false`.
