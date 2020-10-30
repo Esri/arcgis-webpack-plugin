@@ -16,9 +16,8 @@ Helper plugin for building ArcGIS API for JavaScript applications with webpack.
 For version 4.17 and lower, please see [this documentation here](https://github.com/Esri/arcgis-webpack-plugin/blob/96c60c8d469e4976d1b62ec30b4c9838e4d74480/README.md).
 
 * [Features](#features)
-* [Usage](#usage)
 * [Options](#options)
-* [Best Practices](#best-practices)
+* [Usage](#usage)
   * [Asset Loaders](#asset-loaders)
   * [Additional Features](#additional-features)
 * [Issues](#issues)
@@ -29,21 +28,6 @@ For version 4.17 and lower, please see [this documentation here](https://github.
 
 Requires version `4.18.0` or greater of [`arcgis-js-api`](https://www.npmjs.com/package/arcgis-js-api) or [`@arcgis/core`](https://www.npmjs.com/package/@arcgis/core).
 
-# Usage
-
-`npm install --save-dev @arcgis/webpack-plugin`
-
-```js
-// webpack.config.js
-const ArcGISPlugin = require("@arcgis/webpack-plugin");
-
-// add it to config
-module.exports = {
-  ...
-  plugins: [new ArcGISPlugin()]
-  ...
-}
-```
 
 # Options
 
@@ -54,9 +38,9 @@ module.exports = {
 | `features` | {} | **ADVANCED** - See the [Additional Features](#additional-features) section |
 | `userDefinedExcludes` | `[]` | **ADVANCED** - You can provide an array modules as `string` that you want to exclude from the output bundles. For example, you may want to exclude layers you are not using. |
 
-# Best Practices
+# Usage
 
-The bare minimum to start using the plugin is the following:
+`npm install --save-dev @arcgis/webpack-plugin`
 
 ```js
 // webpack.config.js
