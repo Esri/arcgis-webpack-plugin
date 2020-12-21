@@ -94,7 +94,7 @@ Then you can provide your own asset loaders.
     rules: [
       ...
       {
-        test: /\.(jpe?g|png|gif|webp)$/,
+        test: /(@arcgis\/core|arcgis-js-api)([\\]+|\/).*.(jpe?g|png|gif|webp)$/,
         loader: "url-loader",
         options: {
           // Inline files smaller than 10 kB (10240 bytes)
@@ -102,14 +102,9 @@ Then you can provide your own asset loaders.
         }
       },
       {
-        test: /\.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        test: /(@arcgis\/core|arcgis-js-api)([\\]+|\/).*.(ttf|eot|svg|png|jpg|gif|ico|wsv|otf|woff(2)?)(\?[a-z0-9]+)?$/,
         use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "build/[name].[ext]"
-            }
-          }
+          "file-loader"
         ]
       }
     ]
