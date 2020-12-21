@@ -42,10 +42,6 @@ module.exports = class ArcGISPlugin {
   
   apply(compiler) {
     compiler.options.module.rules = compiler.options.module.rules || [];
-    compiler.options.module.rules.push({
-      test: /@dojo/,
-      use: "umd-compat-loader"
-    });
     if (this.options.useDefaultAssetLoaders) {
       compiler.options.module.rules.push({
         test: /(@arcgis\/core|arcgis-js-api)([\\]+|\/).*.(jpe?g|png|gif|webp)$/,
@@ -66,14 +62,9 @@ module.exports = class ArcGISPlugin {
         compiler.options.module.rules.push(userExclusions(this.options.userDefinedExcludes));
       }
       compiler.options.module.rules.push({
-        test: /(@arcgis\/core|arcgis-js-api)([\\]+|\/).*.(wsv|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        test: /(@arcgis\/core|arcgis-js-api)([\\]+|\/).*.(ttf|eot|svg|png|jpg|gif|ico|wsv|otf|woff(2)?)(\?[a-z0-9]+)?$/,
         use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "build/[name].[ext]"
-            }
-          }
+          "file-loader"
         ]
       });
     }

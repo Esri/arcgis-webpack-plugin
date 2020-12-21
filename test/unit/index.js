@@ -23,7 +23,7 @@ describe("Initialize ArcGIS webpack plugin", () => {
     const plugin = new ArcGISWebpackPlugin();
     const compiler = createCompiler();
     plugin.apply(compiler);
-    expect(compiler.options.module.rules).to.have.lengthOf(3);
+    expect(compiler.options.module.rules).to.have.lengthOf(2);
   });
 
   it ("will not use default loaders given useDefaultAssetLoaders = false", () => {
@@ -32,7 +32,7 @@ describe("Initialize ArcGIS webpack plugin", () => {
     });
     const compiler = createCompiler();
     plugin.apply(compiler);
-    expect(compiler.options.module.rules).to.have.lengthOf(1);
+    expect(compiler.options.module.rules).to.have.lengthOf(0);
   });
 
   it ("will use null-loader to exclude 3D modules given exclude3D = true", () => {
@@ -43,7 +43,7 @@ describe("Initialize ArcGIS webpack plugin", () => {
     });
     const compiler = createCompiler();
     plugin.apply(compiler);
-    expect(compiler.options.module.rules).to.have.lengthOf(4);
+    expect(compiler.options.module.rules).to.have.lengthOf(3);
   });
 
   it ("will use null-loader to exclude user defined modules given userDefinedExcludes = true", () => {
@@ -52,6 +52,6 @@ describe("Initialize ArcGIS webpack plugin", () => {
     });
     const compiler = createCompiler();
     plugin.apply(compiler);
-    expect(compiler.options.module.rules).to.have.lengthOf(4);
+    expect(compiler.options.module.rules).to.have.lengthOf(3);
   });
 });

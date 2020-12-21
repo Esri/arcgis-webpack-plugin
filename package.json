@@ -1,6 +1,6 @@
 {
   "name": "@arcgis/webpack-plugin",
-  "version": "4.18.0",
+  "version": "4.18.1",
   "description": "Webpack plugin to load ArcGIS API for JavaScript into a Webpack application",
   "main": "index.js",
   "engines": {
@@ -27,7 +27,6 @@
     "copy-webpack-plugin": "^6.3.2",
     "file-loader": "^6.2.0",
     "null-loader": "^4.0.1",
-    "umd-compat-loader": "^2.1.2",
     "url-loader": "^4.1.1"
   },
   "peerDependencies": {
