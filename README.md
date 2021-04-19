@@ -18,7 +18,6 @@ For version 4.17 and lower, please see [this documentation here](https://github.
 * [Features](#features)
 * [Options](#options)
 * [Usage](#usage)
-  * [Asset Loaders](#asset-loaders)
   * [Additional Features](#additional-features)
 * [Issues](#issues)
 * [Contributing](#contributing)
@@ -67,50 +66,6 @@ module.exports = {
   ]
   ...
 }
-```
-
-## Asset Loaders
-
-By default, this plugin provides provides [url-loader](https://github.com/webpack-contrib/url-loader) for images and [file-loader](https://github.com/webpack-contrib/file-loader) for assets that are only used by the ArcGIS API for JavaScript. However, if you are using another library that you need to load image, svg, or fonts for, you will want to provide your own loaders. You will want to set the `useDefaultAssetLoaders` to `false`.
-
-```js
-// webpack.config.js
-...
-plugins: [
-  new ArcGISPlugin({
-    // disable provided asset loaders
-    useDefaultAssetLoaders: false
-  })
-],
-...
-```
-
-Then you can provide your own asset loaders.
-
-```js
-// webpack.config.js
-...
-  module: {
-    rules: [
-      ...
-      {
-        test: /(@arcgis\/core|arcgis-js-api)([\\]+|\/).*.(jpe?g|png|gif|webp)$/,
-        loader: "url-loader",
-        options: {
-          // Inline files smaller than 10 kB (10240 bytes)
-          limit: 10 * 1024,
-        }
-      },
-      {
-        test: /(@arcgis\/core|arcgis-js-api)([\\]+|\/).*.(ttf|eot|svg|png|jpg|gif|ico|wsv|otf|woff(2)?)(\?[a-z0-9]+)?$/,
-        use: [
-          "file-loader"
-        ]
-      }
-    ]
-  }
-...
-
 ```
 
 ## Additional Features
