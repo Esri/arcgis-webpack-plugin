@@ -34,6 +34,7 @@ This plugin is only really useful if you want to copy the `@arcgis/core/assets` 
 
 | Options     |     Default     | Description   |
 | ----------- | :-------------: |:-------------|
+| `assetsDir` | `assets`  | The directory name to copy `@arcgis/core/assets` to.  |
 | `locales` | `undefined`  | The `t9n` locales you want included in your build output. If not specified, all locales will be available.  |
 | `features` | {} | **ADVANCED** - See the [Additional Features](#additional-features) section |
 | `userDefinedExcludes` | `[]` | **ADVANCED** - You can provide an array modules as `string` that you want to exclude from the output bundles. For example, you may want to exclude layers you are not using. |
