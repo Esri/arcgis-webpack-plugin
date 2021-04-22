@@ -9,7 +9,7 @@
 [travis-img]: https://img.shields.io/travis/Esri/arcgis-webpack-plugin/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/Esri/arcgis-webpack-plugin
 
-Helper plugin for building ArcGIS API for JavaScript applications with webpack.
+Helper plugin for building ArcGIS API for JavaScript applications with webpack to copy assets locally.
 
 **This version of the plugin is for 4.18 or greater of the [ArcGIS API for JavaScript](https://developers.arcgis.com/javascript/).**
 
@@ -27,13 +27,14 @@ For version 4.17 and lower, please see [this documentation here](https://github.
 
 Requires version `4.18.0` or greater of [`arcgis-js-api`](https://www.npmjs.com/package/arcgis-js-api) or [`@arcgis/core`](https://www.npmjs.com/package/@arcgis/core).
 
+This plugin is only really useful if you want to copy the `@arcgis/core/assets` locally to your build. If you do not have that requirement, you may not need this plugin. It is also useful to and minimize the build output using the [additional features](#additional-features) capability of the plugin.
+
 
 # Options
 
 | Options     |     Default     | Description   |
 | ----------- | :-------------: |:-------------|
-| `useDefaultAssetLoaders` | `true` | By default, this plugin provides [url-loader](https://github.com/webpack-contrib/url-loader) for images and [file-loader](https://github.com/webpack-contrib/file-loader) for fonts and svg that are used by the ArcGIS API for JavaScript. If you are using another library that requires you to also load assets, you may want to disable the default loaders of this plugin and use your own. |
-| `locales` | `undefined`  | The `t9n` locales you want included in your build output. If not specified, all locales will be availble.  |
+| `locales` | `undefined`  | The `t9n` locales you want included in your build output. If not specified, all locales will be available.  |
 | `features` | {} | **ADVANCED** - See the [Additional Features](#additional-features) section |
 | `userDefinedExcludes` | `[]` | **ADVANCED** - You can provide an array modules as `string` that you want to exclude from the output bundles. For example, you may want to exclude layers you are not using. |
 
@@ -66,6 +67,14 @@ module.exports = {
   ]
   ...
 }
+```
+
+In your application you need to set the `assetsPath` of `@arcgis/core/config`.
+
+```js
+import config from '@arcgis/core/config';
+
+config.assetsPath = './assets';
 ```
 
 ## Additional Features
