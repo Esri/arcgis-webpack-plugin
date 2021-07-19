@@ -34,6 +34,7 @@ This plugin is only really useful if you want to copy the `@arcgis/core/assets` 
 
 | Options     |     Default     | Description   |
 | ----------- | :-------------: |:-------------|
+| `copyAssets` | `true`  | Should plugin copy assets.  |
 | `assetsDir` | `assets`  | The directory name to copy `@arcgis/core/assets` to.  |
 | `locales` | `undefined`  | The `t9n` locales you want included in your build output. If not specified, all locales will be available.  |
 | `features` | {} | **ADVANCED** - See the [Additional Features](#additional-features) section |
@@ -124,6 +125,25 @@ plugins: [
   })
 ],
 ...
+```
+
+You can specify that you do not want to copy assets, but want to exclude some modules.
+
+```js
+// webpack.config.js
+module.exports = {
+  ...
+  plugins: [
+    new ArcGISPlugin({
+      copyAssets: false,
+      // exclude 3D modules from build
+      features: {
+        "3d": false
+      }
+    })
+  ]
+  ...
+}
 ```
 
 Again, this considered **ADVANCED** usage, so please use with caution.
