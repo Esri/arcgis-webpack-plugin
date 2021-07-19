@@ -20,13 +20,17 @@ module.exports = class ArcGISPlugin {
    * Initialize the plugin
    * @constructor
    * @param {Object} [options] -(optional) The options for the ArcGIS Webpack Plugin
+   * @param {Boolean} [options.copyAssets] -(optional) PLugin should copy assets. Default is `true`.
+   * @param {String} [options.assetsDir] - (optional) Directory name to copy local assets to. Default is `assets`.
    * @param {Object} [options.features] - (optional) Advanced! Set of features you can enable and disable.
-   * @param {boolean} [options.features.3d] - (optional) Advanced! If false, will exclude all 3D related modules from output bundles. Default is `true`
+   * @param {Boolean} [options.features.3d] - (optional) Advanced! If false, will exclude all 3D related modules from output bundles. Default is `true`
    * @param {Array.<string>} [options.userDefinedExcludes] - (optional) Advanced! Provide a list of modules you would like to exclude from the output bundles
    * @param {Array.<string>} [options.locales] - (optional) Which locales to include in build, leave empty to support all locales
    */
   constructor(options = {}) {
     this.options = {
+      copyAssets: true,
+      assetsDir: 'assets',
       features: {
         "3d": true
       },
@@ -44,7 +48,7 @@ module.exports = class ArcGISPlugin {
     if (this.options.userDefinedExcludes && this.options.userDefinedExcludes.length) {
       compiler.options.module.rules.push(userExclusions(this.options.userDefinedExcludes));
     }
-    const plugins = requiredPlugins(this.options.locales);
+    const plugins = requiredPlugins(this.options.locales, this.options.copyAssets, this.options.assetsDir);
     plugins.forEach(plugin => plugin.apply(compiler));
   }
 };
