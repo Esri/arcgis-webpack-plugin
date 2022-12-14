@@ -9,9 +9,9 @@
 [travis-img]: https://img.shields.io/travis/Esri/arcgis-webpack-plugin/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/Esri/arcgis-webpack-plugin
 
-Helper plugin for building ArcGIS API for JavaScript applications with webpack to copy assets locally.
+Helper plugin for building ArcGIS Maps SDK for JavaScript applications with webpack to copy assets locally.
 
-**This version of the plugin is for 4.18 or greater of the [ArcGIS API for JavaScript](https://developers.arcgis.com/javascript/).**
+**This version of the plugin is for 4.18 or greater of the [ArcGIS Maps SDK for JavaScript](https://developers.arcgis.com/javascript/).**
 
 For version 4.17 and lower, please see [this documentation here](https://github.com/Esri/arcgis-webpack-plugin/blob/96c60c8d469e4976d1b62ec30b4c9838e4d74480/README.md).
 
