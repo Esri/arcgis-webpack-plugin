@@ -9,26 +9,19 @@
 [travis-img]: https://img.shields.io/travis/Esri/arcgis-webpack-plugin/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/Esri/arcgis-webpack-plugin
 
-Helper plugin for building ArcGIS Maps SDK for JavaScript applications with webpack to copy assets locally.
+| :warning: This repository has been archived  |
+| :--------------------------------------------|
+| **This version of the plugin is for 4.18 to 4.22 if the [ArcGIS Maps SDK for JavaScript](https://developers.arcgis.com/javascript/). For later versions of the SDK create your own plugin or copy assets by configuring a [script](https://docs.npmjs.com/cli/using-npm/scripts) within the `package.json` file.** |
 
-**This version of the plugin is for 4.18 or greater of the [ArcGIS Maps SDK for JavaScript](https://developers.arcgis.com/javascript/).**
+Helper plugin for building ArcGIS Maps SDK for JavaScript applications with webpack to copy assets locally. This plugin is only really useful if you want to copy the `@arcgis/core/assets` locally to your build. If you do not have that requirement, you may not need this plugin. It is also useful to and minimize the build output using the [additional features](#additional-features) capability of the plugin.
 
-For version 4.17 and lower, please see [this documentation here](https://github.com/Esri/arcgis-webpack-plugin/blob/96c60c8d469e4976d1b62ec30b4c9838e4d74480/README.md).
+For version prior to 4.18, please see [this documentation here](https://github.com/Esri/arcgis-webpack-plugin/blob/96c60c8d469e4976d1b62ec30b4c9838e4d74480/README.md).
 
 * [Features](#features)
 * [Options](#options)
 * [Usage](#usage)
   * [Additional Features](#additional-features)
-* [Issues](#issues)
-* [Contributing](#contributing)
 * [Licensing](#licensing)
-
-# Features
-
-Requires version `4.18.0` or greater of [`arcgis-js-api`](https://www.npmjs.com/package/arcgis-js-api) or [`@arcgis/core`](https://www.npmjs.com/package/@arcgis/core).
-
-This plugin is only really useful if you want to copy the `@arcgis/core/assets` locally to your build. If you do not have that requirement, you may not need this plugin. It is also useful to and minimize the build output using the [additional features](#additional-features) capability of the plugin.
-
 
 # Options
 
@@ -147,19 +140,6 @@ module.exports = {
 ```
 
 Again, this considered **ADVANCED** usage, so please use with caution.
-
-# Issues
-
-Find a bug or want to request a new feature enhancement? Let us know by submitting an issue.
-
-# Contributing
-
-Anyone and everyone is welcome to [contribute](CONTRIBUTING.md). We do accept pull requests.
-
-1.  Get involved
-2.  Report issues
-3.  Contribute code
-4.  Improve documentation
 
 # Licensing
 
